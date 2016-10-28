@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "882691204395",
+    "firebase_url": "https://fir-sample-e113a.firebaseio.com",
+    "project_id": "fir-sample-e113a",
+    "storage_bucket": "fir-sample-e113a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882691204395:android:3236201423b7fd37",
+        "android_client_info": {
+          "package_name": "com.example.zurcher.firebaseexample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "882691204395-oieai3t6ol77tde9qqrevj23h971kcfn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7HZiTVWXJNO443e5r1vaqN3YtuFs2opw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
