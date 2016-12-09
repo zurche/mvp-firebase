@@ -18,7 +18,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".chat.view.ChatActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
     </application>
 
 </manifest>

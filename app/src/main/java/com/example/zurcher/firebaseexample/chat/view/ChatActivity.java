@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.zurcher.firebaseexample.R;
@@ -35,6 +36,8 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
     RecyclerView chat_list;
     @BindView(R.id.input_message)
     EditText input_message;
+    @BindView(R.id.loading_chat_list)
+    ProgressBar loading_chat_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,9 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
         chat_list.setLayoutManager(llm);
+
+        loading_chat_list.setVisibility(View.VISIBLE);
+        chat_list.setVisibility(View.GONE);
     }
 
     @Override
@@ -95,6 +101,9 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
 
         hideSoftInput();
         input_message.setText("");
+
+        loading_chat_list.setVisibility(View.GONE);
+        chat_list.setVisibility(View.VISIBLE);
     }
 
     private void hideSoftInput() {

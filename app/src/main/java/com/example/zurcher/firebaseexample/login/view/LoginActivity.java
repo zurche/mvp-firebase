@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.zurcher.firebaseexample.R;
@@ -16,8 +17,10 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -30,6 +33,11 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     private int SIGN_IN_REQUEST_CODE = 888;
 
     private LoginPresenter presenter;
+
+    @BindView(R.id.sign_in_progress_bar)
+    ProgressBar sign_in_progress_bar;
+    @BindView(R.id.sign_in_button)
+    SignInButton sign_in_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +78,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
 
     @OnClick(R.id.sign_in_button)
     void signIn(View view) {
+        showProgressBar(true);
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, SIGN_IN_REQUEST_CODE);
+    }
+
+    private void showProgressBar(boolean show) {
+        sign_in_progress_bar.setVisibility(show ? View.VISIBLE : View.GONE);
+        sign_in_button.setVisibility(show ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -89,11 +103,15 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
     public void startChatListActivity() {
         Intent intent = new Intent(this, ChatActivity.class);
         startActivity(intent);
+
+        showProgressBar(false);
     }
 
     @Override
     public void showFirebaseAuthenticationFailedMessage() {
         Toast.makeText(LoginActivity.this, "Authentication failed.",
                 Toast.LENGTH_SHORT).show();
+
+        showProgressBar(false);
     }
 }
