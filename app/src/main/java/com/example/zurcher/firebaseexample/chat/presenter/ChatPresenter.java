@@ -16,9 +16,7 @@ public class ChatPresenter implements ChatContract.Presenter {
 
     public ChatPresenter(final ChatContract.View view) {
         this.view = view;
-        //TODO: Number 3 is hardcoded but a mechanism to retrieve a specific chat is required to
-        //TODO: determine the ID of the required chat.
-        interactor = new ChatInteractor(this, 3);
+        interactor = new ChatInteractor(this);
     }
 
     @Override

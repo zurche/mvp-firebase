@@ -24,7 +24,7 @@ class ChatInteractor {
 
     private ArrayList<ChatMessage> mCurrentChatList = new ArrayList<>();
 
-    ChatInteractor(ChatPresenter presenter, int chatId) {
+    ChatInteractor(ChatPresenter presenter) {
         this.presenter = presenter;
         retrieveCurrentChat();
     }
