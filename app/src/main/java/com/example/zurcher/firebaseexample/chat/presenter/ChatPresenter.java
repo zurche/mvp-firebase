@@ -3,6 +3,7 @@ package com.example.zurcher.firebaseexample.chat.presenter;
 import com.example.zurcher.firebaseexample.chat.ChatContract;
 import com.example.zurcher.firebaseexample.chat.model.ChatMessage;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
@@ -21,8 +22,21 @@ public class ChatPresenter implements ChatContract.Presenter {
     }
 
     @Override
-    public void sendNewMessage(ChatMessage message) {
-        interactor.sendNewMessageToChat(message);
+    public void sendNewMessage(String message) {
+        ChatMessage chatMessage = new ChatMessage();
+        chatMessage.setMessage(message);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            chatMessage.setSenderUserName(user.getDisplayName());
+        } else {
+            mView.showUnloggedUserError();
+        }
+
+        String profilePicUrl = "https://" + user.getPhotoUrl().getAuthority() + user.getPhotoUrl().getPath();
+        chatMessage.setProfilePicUri(profilePicUrl.trim());
+
+        interactor.sendNewMessageToChat(chatMessage);
     }
 
     @Override

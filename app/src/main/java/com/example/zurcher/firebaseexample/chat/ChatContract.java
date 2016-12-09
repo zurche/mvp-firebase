@@ -13,10 +13,12 @@ public interface ChatContract {
         void refreshCurrentChatList(ArrayList<ChatMessage> currentChatMessage);
 
         void closeChat();
+
+        void showUnloggedUserError();
     }
 
     interface Presenter {
-        void sendNewMessage(ChatMessage message);
+        void sendNewMessage(String message);
 
         void refreshCurrentChatList(ArrayList<ChatMessage> currentChatMessage);
 

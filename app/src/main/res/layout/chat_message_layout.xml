@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@+id/sender_profile_pic"
-                android:textSize="30sp"
+                android:textSize="20sp"
                 tools:text="Username"/>
 
             <TextView

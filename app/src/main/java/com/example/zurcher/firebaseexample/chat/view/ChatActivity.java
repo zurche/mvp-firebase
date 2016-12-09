@@ -12,13 +12,12 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.zurcher.firebaseexample.R;
 import com.example.zurcher.firebaseexample.chat.ChatContract;
 import com.example.zurcher.firebaseexample.chat.model.ChatMessage;
 import com.example.zurcher.firebaseexample.chat.presenter.ChatPresenter;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
@@ -74,11 +73,16 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
         finish();
     }
 
+    @Override
+    public void showUnloggedUserError() {
+        Toast.makeText(this, "User is not logged in, message can't be sent", Toast.LENGTH_SHORT).show();
+    }
+
     @OnEditorAction (R.id.input_message)
     protected boolean passwordEditorAction(int actionId) {
         boolean handled = false;
         if (actionId == EditorInfo.IME_ACTION_SEND) {
-            sendNewMessageToChat(input_message.getText().toString());
+            presenter.sendNewMessage(input_message.getText().toString());
             handled = true;
         }
         return handled;
@@ -86,7 +90,7 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
 
     @Override
     public void refreshCurrentChatList(ArrayList<ChatMessage> currentChatMessage) {
-        ChatListAdapter chatListAdapter = new ChatListAdapter(currentChatMessage);
+        ChatListAdapter chatListAdapter = new ChatListAdapter(this, currentChatMessage);
         chat_list.setAdapter(chatListAdapter);
 
         hideSoftInput();
@@ -99,20 +103,5 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
-    }
-
-    void sendNewMessageToChat(String message) {
-        ChatMessage chatMessage = new ChatMessage();
-
-        chatMessage.setMessage(message);
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            chatMessage.setSenderUserName(user.getDisplayName());
-        } else {
-            // Un-logged user is trying to send a message.
-        }
-
-        presenter.sendNewMessage(chatMessage);
     }
 }
