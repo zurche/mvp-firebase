@@ -6,6 +6,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Created by zurcher on 27/10/16.
@@ -36,11 +38,14 @@ public class ChatPresenter implements ChatContract.Presenter {
         String profilePicUrl = "https://" + user.getPhotoUrl().getAuthority() + user.getPhotoUrl().getPath();
         chatMessage.setProfilePicUri(profilePicUrl.trim());
 
+        chatMessage.setTimestamp(String.valueOf(System.currentTimeMillis()));
+
         interactor.sendNewMessageToChat(chatMessage);
     }
 
     @Override
     public void refreshCurrentChatList(ArrayList<ChatMessage> currentChatMessage) {
+        Collections.sort(currentChatMessage);
         mView.refreshCurrentChatList(currentChatMessage);
     }
 

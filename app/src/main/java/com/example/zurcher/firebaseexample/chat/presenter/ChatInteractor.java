@@ -42,8 +42,6 @@ class ChatInteractor {
                     mCurrentChatList.add(chatMessage);
                 }
 
-                System.out.println(mCurrentChatList);
-
                 presenter.refreshCurrentChatList(mCurrentChatList);
             }
 
@@ -55,7 +53,6 @@ class ChatInteractor {
     }
 
     void sendNewMessageToChat(ChatMessage message) {
-        String chatKey = String.valueOf(System.currentTimeMillis());
-        firebaseReference.child(chatKey).setValue(message);
+        firebaseReference.child(message.getTimestamp()).setValue(message);
     }
 }

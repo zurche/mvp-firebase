@@ -1,15 +1,14 @@
 package com.example.zurcher.firebaseexample.chat.model;
 
-import java.net.URL;
-
 /**
  * Created by zurcher on 27/10/16.
  */
-public class ChatMessage {
+public class ChatMessage implements Comparable<ChatMessage> {
 
     String message;
     String senderUserName;
     String profilePicUri;
+    String timestamp;
 
     public ChatMessage() {
     }
@@ -41,5 +40,18 @@ public class ChatMessage {
 
     public void setSenderUserName(String senderUserName) {
         this.senderUserName = senderUserName;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    @Override
+    public int compareTo(ChatMessage another) {
+        return another.getTimestamp().compareTo(this.getTimestamp());
     }
 }
