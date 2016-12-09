@@ -4,12 +4,18 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.zurcher.firebaseexample.R;
 import com.example.zurcher.firebaseexample.chat.ChatContract;
-import com.example.zurcher.firebaseexample.chat.presenter.ChatPresenter;
 import com.example.zurcher.firebaseexample.chat.model.ChatMessage;
+import com.example.zurcher.firebaseexample.chat.presenter.ChatPresenter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
@@ -26,6 +32,9 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
     @BindView(R.id.chat_list)
     RecyclerView chat_list;
 
+    @BindView(R.id.input_message)
+    EditText input_message;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +46,19 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
         chat_list.setLayoutManager(llm);
+
+        input_message.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    sendNewMessageToChat(v.getText().toString());
+                    handled = true;
+                }
+                return handled;
+            }
+        });
+
     }
 
     @Override
@@ -45,9 +67,18 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
         chat_list.setAdapter(chatListAdapter);
     }
 
-    @OnClick(R.id.new_message_button)
-    void sendNewMessageToChat(View view) {
-        ChatMessage chatMessage = new ChatMessage("Message is very long", "12354", "Alejandro Zurcher");
+    void sendNewMessageToChat(String message) {
+        ChatMessage chatMessage = new ChatMessage();
+
+        chatMessage.setMessage(message);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            chatMessage.setSenderUserName(user.getDisplayName());
+        } else {
+            // Un-logged user is trying to send a message.
+        }
+
         presenter.sendNewMessage(chatMessage);
     }
 }

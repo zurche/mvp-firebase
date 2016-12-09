@@ -6,15 +6,13 @@ package com.example.zurcher.firebaseexample.chat.model;
 public class ChatMessage {
 
     String message;
-    String userId;
     String senderUserName;
 
     public ChatMessage() {
     }
 
-    public ChatMessage(String message, String userId, String senderUserName) {
+    public ChatMessage(String message, String senderUserName) {
         this.message = message;
-        this.userId = userId;
         this.senderUserName = senderUserName;
     }
 
@@ -24,14 +22,6 @@ public class ChatMessage {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getSenderUserName() {
