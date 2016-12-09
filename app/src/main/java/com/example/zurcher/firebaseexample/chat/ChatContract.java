@@ -1,6 +1,8 @@
 package com.example.zurcher.firebaseexample.chat;
 
-import com.example.zurcher.firebaseexample.chat.model.Chat;
+import com.example.zurcher.firebaseexample.chat.model.ChatMessage;
+
+import java.util.ArrayList;
 
 /**
  * Created by zurcher on 27/10/16.
@@ -8,12 +10,12 @@ import com.example.zurcher.firebaseexample.chat.model.Chat;
 public interface ChatContract {
 
     interface View {
-        void refreshChatMessagesList(Chat currentChat);
+        void refreshCurrentChatList(ArrayList<ChatMessage> currentChatMessage);
     }
 
     interface Presenter {
-        void sendNewMessage(String message);
+        void sendNewMessage(ChatMessage message);
 
-        void refreshCurrentChatMessages(Chat currentChat);
+        void refreshCurrentChatList(ArrayList<ChatMessage> currentChatMessage);
     }
 }

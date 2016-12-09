@@ -1,8 +1,6 @@
 package com.example.zurcher.firebaseexample.chat.presenter;
 
-import android.util.Log;
-
-import com.example.zurcher.firebaseexample.chat.model.Chat;
+import com.example.zurcher.firebaseexample.chat.model.ChatMessage;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -14,7 +12,7 @@ import java.util.ArrayList;
 /**
  * Created by zurcher on 27/10/16.
  */
-public class ChatInteractor {
+class ChatInteractor {
 
     private static final String TAG = ChatInteractor.class.getSimpleName();
 
@@ -24,25 +22,27 @@ public class ChatInteractor {
 
     private ChatPresenter presenter;
 
-    private Chat currentChat;
+    private ArrayList<ChatMessage> mCurrentChatList = new ArrayList<>();
 
     ChatInteractor(ChatPresenter presenter, int chatId) {
         this.presenter = presenter;
-        this.currentChat = new Chat(new ArrayList<String>(), chatId);
         retrieveCurrentChat();
     }
 
     private void retrieveCurrentChat() {
-        firebaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        firebaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Chat selectedChat = dataSnapshot.child(String.valueOf(currentChat.getChatId())).getValue(Chat.class);
-                if (null != selectedChat) {
-                    currentChat = selectedChat;
-                    Log.d(TAG, "Chat is: " + currentChat.getMessages());
-                } else {
-                    Log.e(TAG, "Chat list is empty");
+                mCurrentChatList.clear();
+
+                for (DataSnapshot messagesSnapshot : dataSnapshot.getChildren()) {
+                    ChatMessage chatMessage = messagesSnapshot.getValue(ChatMessage.class);
+                    mCurrentChatList.add(chatMessage);
                 }
+
+                System.out.println(mCurrentChatList);
+
+                presenter.refreshCurrentChatList(mCurrentChatList);
             }
 
             @Override
@@ -52,11 +52,8 @@ public class ChatInteractor {
         });
     }
 
-    public void sendNewMessageToChat(String message) {
-        currentChat.getMessages().add(message);
-
-        firebaseReference.child(String.valueOf(currentChat.getChatId())).setValue(currentChat);
-
-        presenter.refreshCurrentChatMessages(currentChat);
+    void sendNewMessageToChat(ChatMessage message) {
+        String chatKey = String.valueOf(System.currentTimeMillis());
+        firebaseReference.child(chatKey).setValue(message);
     }
 }
