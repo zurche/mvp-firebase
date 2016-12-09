@@ -11,11 +11,15 @@ public interface ChatContract {
 
     interface View {
         void refreshCurrentChatList(ArrayList<ChatMessage> currentChatMessage);
+
+        void closeChat();
     }
 
     interface Presenter {
         void sendNewMessage(ChatMessage message);
 
         void refreshCurrentChatList(ArrayList<ChatMessage> currentChatMessage);
+
+        void signOut();
     }
 }

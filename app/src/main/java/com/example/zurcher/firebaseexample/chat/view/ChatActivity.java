@@ -1,14 +1,17 @@
 package com.example.zurcher.firebaseexample.chat.view;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.example.zurcher.firebaseexample.R;
 import com.example.zurcher.firebaseexample.chat.ChatContract;
@@ -21,7 +24,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
+import butterknife.OnEditorAction;
 
 public class ChatActivity extends AppCompatActivity implements ChatContract.View {
 
@@ -31,7 +34,6 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
 
     @BindView(R.id.chat_list)
     RecyclerView chat_list;
-
     @BindView(R.id.input_message)
     EditText input_message;
 
@@ -46,25 +48,57 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
         chat_list.setLayoutManager(llm);
+    }
 
-        input_message.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean handled = false;
-                if (actionId == EditorInfo.IME_ACTION_SEND) {
-                    sendNewMessageToChat(v.getText().toString());
-                    handled = true;
-                }
-                return handled;
-            }
-        });
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_sign_out:
+                presenter.signOut();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+    @Override
+    public void closeChat() {
+        finish();
+    }
+
+    @OnEditorAction (R.id.input_message)
+    protected boolean passwordEditorAction(int actionId) {
+        boolean handled = false;
+        if (actionId == EditorInfo.IME_ACTION_SEND) {
+            sendNewMessageToChat(input_message.getText().toString());
+            handled = true;
+        }
+        return handled;
     }
 
     @Override
     public void refreshCurrentChatList(ArrayList<ChatMessage> currentChatMessage) {
         ChatListAdapter chatListAdapter = new ChatListAdapter(currentChatMessage);
         chat_list.setAdapter(chatListAdapter);
+
+        hideSoftInput();
+        input_message.setText("");
+    }
+
+    private void hideSoftInput() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     void sendNewMessageToChat(String message) {
