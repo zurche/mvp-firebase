@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "882691204395-24pgckdtll9kvrigt5msm3tnfqdfh2ps.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.zurcher.firebaseexample",
+            "certificate_hash": "D1F04282EF4E46D01AFA2015FD6D1D057A386725"
+          }
+        },
+        {
           "client_id": "882691204395-oieai3t6ol77tde9qqrevj23h971kcfn.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "882691204395-oieai3t6ol77tde9qqrevj23h971kcfn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
