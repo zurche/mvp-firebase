@@ -26,7 +26,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     private final LoginContract.View mView;
 
-    private final FirebaseAuth mAuth;
+    private final FirebaseAuth mFirebaseAuth;
 
     private final Context mContext;
 
@@ -46,17 +46,15 @@ public class LoginPresenter implements LoginContract.Presenter {
     public LoginPresenter(Context context) {
         mView = (LoginContract.View) context;
         mContext = context;
-        mAuth = FirebaseAuth.getInstance();
+        mFirebaseAuth = FirebaseAuth.getInstance();
     }
 
     public void setAuthListener() {
-        mAuth.addAuthStateListener(mAuthListener);
+        mFirebaseAuth.addAuthStateListener(mAuthListener);
     }
 
     public void removeAuthListener() {
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
+        mFirebaseAuth.removeAuthStateListener(mAuthListener);
     }
 
     @Override
@@ -64,7 +62,7 @@ public class LoginPresenter implements LoginContract.Presenter {
         Log.d(TAG, "firebaseAuthWithGoogle:" + account.getId());
 
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
+        mFirebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener((Activity) mContext, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {

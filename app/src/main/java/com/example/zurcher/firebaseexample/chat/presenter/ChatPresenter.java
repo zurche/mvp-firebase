@@ -48,6 +48,15 @@ public class ChatPresenter implements ChatContract.Presenter {
         mView.refreshCurrentChatList(currentChatMessage);
     }
 
+    /**
+     * This code should be used to log out from GMS too:
+     * Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
+        @Override
+        public void onResult(@NonNull Status status) {
+            Toast.makeText(LoginActivity.this, "Successfully Signed Out", Toast.LENGTH_SHORT).show();
+        }
+       });
+     */
     @Override
     public void signOut() {
         FirebaseAuth.getInstance().signOut();

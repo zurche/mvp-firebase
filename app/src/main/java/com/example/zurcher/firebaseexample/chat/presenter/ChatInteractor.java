@@ -1,8 +1,6 @@
 package com.example.zurcher.firebaseexample.chat.presenter;
 
 import com.example.zurcher.firebaseexample.chat.model.ChatMessage;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,7 +18,7 @@ class ChatInteractor {
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-    private DatabaseReference firebaseReference = database.getReference("chat");
+    private DatabaseReference chatElementReference = database.getReference("chat");
 
     private ChatPresenter presenter;
 
@@ -32,7 +30,7 @@ class ChatInteractor {
     }
 
     private void retrieveCurrentChat() {
-        firebaseReference.addValueEventListener(new ValueEventListener() {
+        chatElementReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mCurrentChatList.clear();
@@ -53,6 +51,6 @@ class ChatInteractor {
     }
 
     void sendNewMessageToChat(ChatMessage message) {
-        firebaseReference.child(message.getTimestamp()).setValue(message);
+        chatElementReference.child(message.getTimestamp()).setValue(message);
     }
 }
