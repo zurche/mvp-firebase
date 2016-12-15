@@ -90,6 +90,9 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
         if (actionId == EditorInfo.IME_ACTION_SEND) {
             presenter.sendNewMessage(input_message.getText().toString());
             handled = true;
+
+            hideSoftInput();
+            input_message.setText("");
         }
         return handled;
     }
@@ -98,9 +101,6 @@ public class ChatActivity extends AppCompatActivity implements ChatContract.View
     public void refreshCurrentChatList(ArrayList<ChatMessage> currentChatMessage) {
         ChatListAdapter chatListAdapter = new ChatListAdapter(this, currentChatMessage);
         chat_list.setAdapter(chatListAdapter);
-
-        hideSoftInput();
-        input_message.setText("");
 
         loading_chat_list.setVisibility(View.GONE);
         chat_list.setVisibility(View.VISIBLE);
